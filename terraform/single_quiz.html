@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Terraform Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { color: #333; }
+        .question { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Terraform Quiz</h1>
+    <form method="post" action="/submit">
+        {% for q in quiz %}
+        <div class="question">
+            <strong>Q{{ loop.index }}. {{ q.question }}</strong>
+            <ul style="list-style-type: none; padding-left: 0;">
+                {% set qidx = loop.index0 %}
+                {% for opt in q.options %}
+                <li>
+                    <label>
+                        <input type="radio" name="q{{ qidx }}" value="{{ loop.index0 }}" required>
+                        {{ opt }}
+                    </label>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+        <button type="submit">Submit Answers</button>
+    </form>
+</body>
+</html>

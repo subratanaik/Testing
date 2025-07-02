@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { color: #333; }
+        .correct { color: green; font-weight: bold; }
+        .wrong { color: red; font-weight: bold; }
+        ul { margin: 0; padding-left: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Quiz Results</h1>
+    <p>Your Score: {{ score }} / {{ total }}</p>
+    {% for quiz in results %}
+        <h2>{{ quiz.title }}</h2>
+        <ol>
+        {% for q in quiz.questions %}
+            <li>
+                <div>{{ q.question }}</div>
+                <ul>
+                {% for opt in q.options %}
+                    <li
+                        {% if loop.index0 == q.correct_answer %}class="correct"{% endif %}
+                        {% if q.user_answer is not none and loop.index0 == q.user_answer and not q.is_correct %}class="wrong"{% endif %}
+                    >
+                        {{ opt }}
+                        {% if loop.index0 == q.user_answer %} (Your answer){% endif %}
+                        {% if loop.index0 == q.correct_answer %} (Correct answer){% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ol>
+    {% endfor %}
+    <a href="/">Try Again</a>
+</body>
+</html>

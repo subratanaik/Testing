@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { color: #333; }
+        .correct { color: green; font-weight: bold; }
+        .wrong { color: red; font-weight: bold; }
+        ul { margin: 0; padding-left: 20px; }
+        .desc { font-size: 0.95em; color: #555; margin-top: 2px; }
+    </style>
+</head>
+<body>
+    <h1>Quiz Results</h1>
+    <p>Your Score: {{ score }} / {{ total }}</p>
+    <ol>
+    {% for q in results %}
+        <li>
+            <div>{{ q.question }}</div>
+            <ul>
+            {% for opt in q.options %}
+                <li
+                    {% if loop.index0 == q.correct_answer %}class="correct"{% endif %}
+                    {% if q.user_answer is not none and loop.index0 == q.user_answer and not q.is_correct %}class="wrong"{% endif %}
+                >
+                    {{ opt }}
+                    {% if loop.index0 == q.user_answer %} (Your answer){% endif %}
+                    {% if loop.index0 == q.correct_answer %} (Correct answer){% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+            <div class="desc">
+                {% if q.correct_answer == 1 %}
+                    {% if q.question == 'What is Terraform primarily used for?' %}
+                        Terraform is primarily used for Infrastructure as Code (IaC), allowing you to define and provision infrastructure using code.
+                    {% elif q.question == 'What is a provider in Terraform?' %}
+                        A provider in Terraform is a plugin that allows Terraform to interact with APIs of cloud providers and other services.
+                    {% elif q.question == 'How do you define a variable in Terraform?' %}
+                        In Terraform, variables are defined using the <code>variable {}</code> block.
+                    {% endif %}
+                {% elif q.correct_answer == 0 %}
+                    {% if q.question == 'Which file extension does Terraform use for configuration files?' %}
+                        Terraform configuration files use the <code>.tf</code> extension.
+                    {% elif q.question == 'What is the default name of the Terraform state file?' %}
+                        The default name of the Terraform state file is <code>terraform.tfstate</code>.
+                    {% endif %}
+                {% endif %}
+            </div>
+        </li>
+    {% endfor %}
+    </ol>
+    <a href="/">Try Again</a>
+</body>
+</html>

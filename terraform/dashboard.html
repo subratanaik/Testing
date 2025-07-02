@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Terraform Quiz Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { border-collapse: collapse; width: 80%; }
+        th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+        th { background: #f4f4f4; }
+        h1 { color: #333; }
+        .quiz-title { font-weight: bold; }
+        ul { margin: 0; padding-left: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Terraform Quiz Dashboard</h1>
+    <form method="post" action="/submit">
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Quiz Title</th>
+            <th>Questions</th>
+        </tr>
+        {% for quiz in quizzes %}
+        <tr>
+            <td>{{ quiz.id }}</td>
+            <td class="quiz-title">{{ quiz.title }}</td>
+            <td>
+                <ol>
+                {% for q in quiz.questions %}
+                    <li>
+                        <div>{{ q.question }}</div>
+                        <ul style="list-style-type: none;">
+                        {% for opt in q.options %}
+                            <li>
+                                <label>
+                                    <input type="radio" name="quiz{{ quiz.id }}_q{{ loop.parent.loop.index0 }}" value="{{ loop.index0 }}">
+                                    {{ opt }}
+                                </label>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+                </ol>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <button type="submit">Submit Answers</button>
+    </form>
+</body>
+</html>
